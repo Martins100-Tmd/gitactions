@@ -1,18 +1,18 @@
 import { gcd } from "../math/gcd";
-import { sum } from "../math/sum"
+import { sum } from "../math/sum";
 import { test, expect, describe } from "vitest";
 
 test("sum with argument (1,3) returns 4", () => {
     expect(sum(1, 3)).toBe(4);
-})
+});
 
 test("sum with argument (0,0) returns 0", () => {
     expect(sum(0, 0)).toBe(0);
-})
+});
 
 test("sum with argument (1,0.5) returns 4", () => {
     expect(sum(1, 0.5)).toBe(1.5);
-})
+});
 
 describe("sum()", () => {
     test("basic cases", () => {
@@ -72,4 +72,30 @@ describe("gcd()", () => {
             expect(gcd(a, b)).toBe(expectedGcd(a, b));
         });
     }
+});
+
+
+describe("Use toBeClose for floating number bcos of rounding up error", () => {
+    let arr = ["Apple", "Orange", "Mango"];
+    function compileAndroidCode() {
+        throw new Error('you are using the wrong JDK!');
+    }
+    test("0.1+0.33333333333333 toBeClose to 0.4", () => {
+        let a = 0.1,
+            b = 0.33333333;
+        expect(a + b).toBeCloseTo(0.43333333);
+    });
+    test("String test", () => {
+        expect("Martins").contains("artins");
+    });
+    test("Array test", () => {
+        expect(arr).includes("Orange");
+        expect(arr.indexOf("Micheal")).toBeLessThan(0);
+    });
+    test("String test", () => {
+        expect("Martins").contains("artins");
+    });
+    test("Function to throw error", () => {
+        expect(() => compileAndroidCode()).toThrowError("you are using the wrong JDK!");
+    })
 });
