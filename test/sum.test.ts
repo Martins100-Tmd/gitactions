@@ -80,6 +80,15 @@ describe("Use toBeClose for floating number bcos of rounding up error", () => {
     function compileAndroidCode() {
         throw new Error('you are using the wrong JDK!');
     }
+
+    function goodOne() {
+        return new Promise((res, rej) => res("Mr Martins"));
+    }
+
+    function badOne() {
+        return new Promise((res, rej) => rej("Couldn't get Mr Martins!"));
+    }
+
     test("0.1+0.33333333333333 toBeClose to 0.4", () => {
         let a = 0.1,
             b = 0.33333333;
@@ -98,4 +107,14 @@ describe("Use toBeClose for floating number bcos of rounding up error", () => {
     test("Function to throw error", () => {
         expect(() => compileAndroidCode()).toThrowError("you are using the wrong JDK!");
     })
+    test("Async code", () => {
+        expect.assertions(1);
+        return goodOne().then((res) => {
+            expect(res).toBe("Mr Martins");
+        })
+    });
+    test("Async code 1", async () => {
+        await expect(goodOne()).resolves.toBe("Mr Martins");
+        await expect(badOne()).rejects.toBe("Couldn't get Mr Martins!");
+    });
 });
