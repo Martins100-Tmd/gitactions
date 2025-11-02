@@ -1,5 +1,6 @@
+import { gcd } from "../math/gcd";
 import { sum } from "../math/sum"
-import { test, expect } from "vitest";
+import { test, expect, describe } from "vitest";
 
 test("sum with argument (1,3) returns 4", () => {
     expect(sum(1, 3)).toBe(4);
@@ -12,3 +13,63 @@ test("sum with argument (0,0) returns 0", () => {
 test("sum with argument (1,0.5) returns 4", () => {
     expect(sum(1, 0.5)).toBe(1.5);
 })
+
+describe("sum()", () => {
+    test("basic cases", () => {
+        expect(sum(1, 2)).toBe(3);
+        expect(sum(-1, 1)).toBe(0);
+        expect(sum(0, 0)).toBe(0);
+        expect(sum(100, 200)).toBe(300);
+    });
+
+    test("handles negative and large values", () => {
+        expect(sum(-5, -7)).toBe(-12);
+        expect(sum(1e6, 2e6)).toBe(3e6);
+        expect(sum(-1e9, 1e9)).toBe(0);
+    });
+
+    // Generate 50 random test cases
+    for (let i = 0; i < 50; i++) {
+        const a = Math.floor(Math.random() * 1e6 - 5e5);
+        const b = Math.floor(Math.random() * 1e6 - 5e5);
+        test(`random sum test #${i + 1}: sum(${a}, ${b})`, () => {
+            expect(sum(a, b)).toBe(a + b);
+        });
+    }
+});
+
+describe("gcd()", () => {
+    test("basic gcd cases", () => {
+        expect(gcd(12, 8)).toBe(4);
+        expect(gcd(100, 25)).toBe(25);
+        expect(gcd(7, 3)).toBe(1);
+        expect(gcd(0, 5)).toBe(5);
+        expect(gcd(5, 0)).toBe(5);
+        expect(gcd(0, 0)).toBe(0);
+    });
+
+    // test("gcd with negatives should match positive results", () => {
+    //     // expect(gcd(-12, 8)).toBe(4);
+    //     expect(gcd(12, -8)).toBe(4);
+    //     expect(gcd(-12, -8)).toBe(4);
+    // });
+
+    test("gcd of large numbers", () => {
+        expect(gcd(1_000_000_000, 500_000_000)).toBe(500_000_000);
+    });
+
+    // Generate 50 random gcd tests
+    for (let i = 0; i < 50; i++) {
+        const a = Math.floor(Math.random() * 1e6);
+        const b = Math.floor(Math.random() * 1e6);
+
+        const expectedGcd = (x: number, y: number): number => {
+            while (y !== 0) [x, y] = [y, x % y];
+            return Math.abs(x);
+        };
+
+        test(`random gcd test #${i + 1}: gcd(${a}, ${b})`, () => {
+            expect(gcd(a, b)).toBe(expectedGcd(a, b));
+        });
+    }
+});
